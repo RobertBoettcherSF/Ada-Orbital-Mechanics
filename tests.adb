@@ -1,5 +1,6 @@
 with Ada.Text_IO; use Ada.Text_IO;
 with Ada.Numerics;
+with Ada.Numerics.Long_Elementary_Functions; use Ada.Numerics.Long_Elementary_Functions;
 with Orbital_Mechanics; use Orbital_Mechanics;
 
 procedure Tests is
@@ -171,7 +172,7 @@ begin
       M_Known : constant Radians := 0.75;
       E_Calc  : constant Radians := Solve_Kepler_Elliptic (M_Known, Ecc);
       M_Back  : constant Long_Float :=
-        Long_Float (E_Calc) - Long_Float (Ecc) * Long_Float'Sin (Long_Float (E_Calc));
+        Long_Float (E_Calc) - Long_Float (Ecc) * Sin (Long_Float (E_Calc));
    begin
       Check ("8.1 Solver satisfies Kepler equation M = E - e*sin(E)",
              Approx_Eq (M_Back, Long_Float (M_Known), 1.0e-9));
@@ -191,7 +192,7 @@ begin
       M_Hyp   : constant Radians := 1.2;
       H_Calc  : constant Radians := Solve_Kepler_Hyperbolic (M_Hyp, Ecc_Hyp);
       M_Back  : constant Long_Float :=
-        Long_Float (Ecc_Hyp) * Long_Float'Sinh (Long_Float (H_Calc)) - Long_Float (H_Calc);
+        Long_Float (Ecc_Hyp) * Sinh (Long_Float (H_Calc)) - Long_Float (H_Calc);
       V_Inf   : constant Speed := Hyperbolic_Excess_Velocity (Mu_Earth, -2.0e7);
    begin
       Check ("9.1 Hyperbolic Kepler residual e*sinh(H) - H - M = 0",
@@ -265,23 +266,20 @@ begin
    end;
 
    -------------------------------------------------------------------
-   --  TEST 13: Edge Cases and Exception Handling
+   --  TEST 13: Edge Cases and Robustness
    -------------------------------------------------------------------
    Put_Line ("TEST 13 -- Edge Cases and Robustness");
-   declare
-      Caught_Singularity : Boolean := False;
    begin
       --  13.1 Testing invalid radius/energy resulting in negative term
       begin
          declare
-            -- Radius so far out compared to small semi-major axis that term becomes negative
             Dummy : Speed := Vis_Viva_Velocity (Mu_Earth, 1.0e9, 1.0 / 100.0);
+            pragma Unreferenced (Dummy);
          begin
             Check ("13.1 Invalid energy didn't raise exception", False);
          end;
       exception
          when Singularity_Error =>
-            Caught_Singularity := True;
             Check ("13.1 Singularity_Error correctly raised on negative kinetic energy", True);
          when others =>
             Check ("13.1 Unexpected exception raised", False);
