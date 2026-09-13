@@ -8,22 +8,22 @@ This project provides a robust, strongly-typed implementation of fundamental two
 * Subtype categorization enforcing physical validity at compile- and run-time (`Elliptic_Eccentricity`, `Hyperbolic_Eccentricity`, `Positive_Distance`, `Positive_Time`).
 * Ada contract aspects (`Pre`, `Post`) guarding mathematical domain constraints.
 * Orbital velocity formulations:
-  * General Vis-Viva Equation: v^2 = mu * (2/r - 1/a)
-  * Circular velocity: v_c = sqrt(mu / r)
-  * Escape velocity: v_esc = sqrt(2 * mu / r)
-  * Hyperbolic excess velocity: v_inf = sqrt(-mu / a)
+  * General Vis-Viva Equation: `v^2 = mu * (2/r - 1/a)`
+  * Circular velocity: `v_c = sqrt(mu / r)`
+  * Escape velocity: `v_esc = sqrt(2 * mu / r)`
+  * Hyperbolic excess velocity: `v_inf = sqrt(-mu / a)`
 * Kepler's Third Law (Harmonic Law):
   * Period calculation from semi-major axis
   * Inverted calculation: semi-major axis from orbital period
   * Mean motion (angular frequency) computation
 * Specific orbital invariants:
   * Specific orbital energy (vis-viva conservation)
-  * Specific relative angular momentum: h = sqrt(p * mu)
+  * Specific relative angular momentum: `h = sqrt(p * mu)`
   * Semi-latus rectum computation
 * Apsidal geometry (periapsis and apoapsis calculations).
 * Kepler's Equation solvers:
-  * Elliptic solver for M = E - e * sin(E)
-  * Hyperbolic solver for M_h = e * sinh(H) - H
+  * Elliptic solver for `M = E - e * sin(E)`
+  * Hyperbolic solver for `M_h = e * sinh(H) - H`
   * True anomaly derivation from eccentric anomaly
   * Radial distance evaluation as a function of true anomaly
 * Coplanar two-impulse Hohmann transfer orbit analyzer (Delta-V budgets and transfer time of flight).
@@ -31,9 +31,13 @@ This project provides a robust, strongly-typed implementation of fundamental two
 ## Usage
 Run the test suite using the standard Makefile target:
 
+```bash
 make test
+```
 
 Expected output:
+
+```text
 Running tests...
 ============================================================
            ORBITAL MECHANICS TEST SUITE                     
@@ -94,13 +98,14 @@ TEST 13 -- Edge Cases and Robustness
   PASS -- 13.3 Eccentricity = 1.0 yields periapsis rp = 0 for collision path
 
 ===  42 passed,  0 failed ===
+```
 
 ## Testing
 The test suite in `tests.adb` executes 13 distinct test scenarios containing 42 discrete assertions:
 * **Functional Correctness:** Asserts numerical accuracy of vis-viva equations, escape speeds, and orbital periods against established values for LEO and GEO regimes.
 * **Conservation Laws:** Validates that total specific orbital energy matches theoretical values for bound, parabolic, and hyperbolic orbits, and confirms angular momentum conservation across periapsis and apoapsis.
 * **Iterative Convergence:** Exercises Newton-Raphson solvers across both elliptic and hyperbolic regimes, confirming that substituted roots solve Kepler's equation to within numerical tolerances.
-* **Edge Cases & Invariants:** Verifies behavior at circular eccentricity bounds (e = 0.0), collision trajectories (e = 1.0), and guarantees `Singularity_Error` triggers when orbital parameters violate energy constraints.
+* **Edge Cases & Invariants:** Verifies behavior at circular eccentricity bounds (`e = 0.0`), collision trajectories (`e = 1.0`), and guarantees `Singularity_Error` triggers when orbital parameters violate energy constraints.
 
 ## Building
 * **Compiler Requirements:** GNAT supporting Ada 2022 / Ada 2023 (`-gnat2022` or `-gnat2023`).
