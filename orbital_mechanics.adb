@@ -169,7 +169,7 @@ is
    is
       M_Norm : constant Long_Float := Normalize_Angle (Long_Float (Mean_Anomaly));
       E_Val  : Long_Float;
-      Delta  : Long_Float;
+      Step   : Long_Float;
       E_Num  : constant Long_Float := Long_Float (Ecc);
    begin
       --  Initial guess: E_0 = M for e < 0.8, else pi
@@ -183,11 +183,11 @@ is
       --  f(E) = E - e*sin(E) - M
       --  f'(E) = 1 - e*cos(E)
       for Iter in 1 .. Max_Iter loop
-         Delta := (E_Val - E_Num * Sin (E_Val) - M_Norm) /
-                  (1.0 - E_Num * Cos (E_Val));
-         E_Val := E_Val - Delta;
+         Step := (E_Val - E_Num * Sin (E_Val) - M_Norm) /
+                 (1.0 - E_Num * Cos (E_Val));
+         E_Val := E_Val - Step;
 
-         if abs (Delta) < Tolerance then
+         if abs (Step) < Tolerance then
             return Radians (E_Val);
          end if;
       end loop;
@@ -204,7 +204,7 @@ is
       M_Val : constant Long_Float := Long_Float (Mean_Anomaly);
       E_Num : constant Long_Float := Long_Float (Ecc);
       H_Val : Long_Float;
-      Delta : Long_Float;
+      Step  : Long_Float;
    begin
       --  Initial estimate for hyperbolic anomaly
       H_Val := M_Val / (E_Num - 1.0);
@@ -220,11 +220,11 @@ is
       --  f(H) = e * sinh(H) - H - M
       --  f'(H) = e * cosh(H) - 1
       for Iter in 1 .. Max_Iter loop
-         Delta := (E_Num * Sinh (H_Val) - H_Val - M_Val) /
-                  (E_Num * Cosh (H_Val) - 1.0);
-         H_Val := H_Val - Delta;
+         Step := (E_Num * Sinh (H_Val) - H_Val - M_Val) /
+                 (E_Num * Cosh (H_Val) - 1.0);
+         H_Val := H_Val - Step;
 
-         if abs (Delta) < Tolerance then
+         if abs (Step) < Tolerance then
             return Radians (H_Val);
          end if;
       end loop;
@@ -236,10 +236,10 @@ is
      (Eccentric_Anomaly : Radians;
       Ecc               : Elliptic_Eccentricity) return Radians
    is
-      E_Val  : constant Long_Float := Long_Float (Eccentric_Anomaly);
-      E_Num  : constant Long_Float := Long_Float (Ecc);
-      Factor : constant Long_Float := Sqrt ((1.0 + E_Num) / (1.0 - E_Num));
-      Nu_Half: constant Long_Float := Arctan (Factor * Tan (E_Val / 2.0));
+      E_Val   : constant Long_Float := Long_Float (Eccentric_Anomaly);
+      E_Num   : constant Long_Float := Long_Float (Ecc);
+      Factor  : constant Long_Float := Sqrt ((1.0 + E_Num) / (1.0 - E_Num));
+      Nu_Half : constant Long_Float := Arctan (Factor * Tan (E_Val / 2.0));
    begin
       return Radians (2.0 * Nu_Half);
    end True_Anomaly_From_Eccentric;
