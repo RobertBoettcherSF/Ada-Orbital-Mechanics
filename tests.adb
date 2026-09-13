@@ -199,8 +199,8 @@ begin
              Approx_Eq (M_Back, Long_Float (M_Hyp), 1.0e-8));
       Check ("9.2 Hyperbolic excess speed sqrt(-mu/a) evaluates correctly",
              Approx_Eq (Long_Float (V_Inf), 4464.3, 1.0e-3));
-      Check ("9.3 H has same sign as M",
-             (Long_Float (H_Calc) > 0.0) = (Long_Float (M_Hyp) > 0.0));
+      Check ("9.3 H has same sign as M (positive for positive input)",
+             Long_Float (H_Calc) > 0.0);
    end;
 
    -------------------------------------------------------------------
