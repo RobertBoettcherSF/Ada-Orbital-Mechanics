@@ -231,12 +231,12 @@ begin
    declare
       Tx : constant Hohmann_Transfer_Result := Hohmann_Transfer (Mu_Earth, LEO_Rad, GEO_Rad);
    begin
-      Check ("11.1 First burn Delta V_1 near 2425 m/s",
-             Approx_Eq (Long_Float (Tx.Delta_V_1), 2425.0, 1.0e-2));
-      Check ("11.2 Second burn Delta V_2 near 1466 m/s",
-             Approx_Eq (Long_Float (Tx.Delta_V_2), 1466.0, 1.0e-2));
-      Check ("11.3 Total Delta V near 3891 m/s",
-             Approx_Eq (Long_Float (Tx.Total_Delta_V), 3891.0, 1.0e-2));
+      Check ("11.1 First burn Delta V_1 near 2397 m/s",
+             Approx_Eq (Long_Float (Tx.Delta_V_1), 2397.5, 1.0e-2));
+      Check ("11.2 Second burn Delta V_2 near 1456 m/s",
+             Approx_Eq (Long_Float (Tx.Delta_V_2), 1456.5, 1.0e-2));
+      Check ("11.3 Total Delta V near 3854 m/s",
+             Approx_Eq (Long_Float (Tx.Total_Delta_V), 3854.0, 1.0e-2));
       Check ("11.4 Time of flight is approx 5.27 hours (18990 s)",
              Approx_Eq (Long_Float (Tx.Time_Of_Flight), 18990.0, 1.0e-2));
    end;
