@@ -6,6 +6,7 @@
 --               equation solvers for elliptic and hyperbolic regimes.
 
 with Ada.Numerics;
+with Ada.Numerics.Long_Elementary_Functions;
 
 package Orbital_Mechanics with
   SPARK_Mode => On
@@ -214,7 +215,8 @@ is
       Ecc                   : Eccentricity;
       True_Anomaly          : Radians) return Positive_Distance
    with
-     Pre => (1.0 + Long_Float (Ecc) * Long_Float'Cos (Long_Float (True_Anomaly))) > 0.0;
+     Pre => (1.0 + Long_Float (Ecc) *
+               Ada.Numerics.Long_Elementary_Functions.Cos (Long_Float (True_Anomaly))) > 0.0;
 
    ----------------------------------------------------------------------
    --  6. Hohmann Orbital Transfer Calculations
